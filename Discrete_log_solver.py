@@ -6,7 +6,7 @@
 #b is an element mod n (0,1,....,n-1)
 
 ###################FUN###################
-#              Try To Imput             #     
+#              Try To Input             #     
 #             n = 77711                 #
 #             a = 175                   #
 #             b = 63368                 #
@@ -16,7 +16,12 @@ import math
 import time
 
 #Takes integers n,a,b and solves for x in the equation a^x = b (mod n)
-#Using the famous baby-step giant-step algorithm and times it
+#Using the Pollard_Rho algorithm then prints its answer and time
+def Pollard_Rho(n,a,b):
+    print("")
+
+#Takes integers n,a,b and solves for x in the equation a^x = b (mod n)
+#Using the famous baby-step giant-step algorithm then prints its answer and time
 def babystepgiantstep(n,a,b):  
     start = time.time()
     x = str("no solution")
@@ -30,10 +35,9 @@ def babystepgiantstep(n,a,b):
     #=>   a^(im+j) = b (mod n)
     #=> a^(im)*a^j = b (mod n)
     #=> 1*a^j = (a^(-m))^i * b (mod n)
-    #Thus we only have to find a i and j such that it satifies the above
+    #Thus we only have to find a i and j such that it satisfies the above
 
     m = math.ceil(math.sqrt(n-1))
-    
     hash_table={} #This will store all pairs (j,a^j)
     
     #Giant Steps
@@ -42,10 +46,11 @@ def babystepgiantstep(n,a,b):
 
     #Baby Steps
     for j in range(0,n):
-        y = (a**j)%n
+        y = (a**j) % n
         if y in hash_table.keys():
-            x = hash_table.get(y)*m + j
+            x = hash_table.get(y) * m + j
             break
+
 
     end = time.time()
     print("Baby-Step Giant-Step Algorithm time: ",end - start, "Seconds")
@@ -53,7 +58,7 @@ def babystepgiantstep(n,a,b):
     print("")
 
 #Takes integers n,a,b and solves for x in the equation a^x = b (mod n)
-#Using a brute force method
+#Using a brute force method then prints its answer and time
 def bruteforce(n,a,b):
     x = str("no solution")
     start = time.time()
