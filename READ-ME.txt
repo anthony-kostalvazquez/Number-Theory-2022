@@ -18,17 +18,26 @@ python code that solves the descrete logrythm problem using a brute force approa
 |-------------------------------sample output-------------------------------|
 
 
---Discrete_Log_Solver.c--
-this is a folder that contains a main function and a library in c to solve the descrete logrythm problem a brute force approach and the famous babystep giantstep algortythm.
+--Discrete_Log_Solver.c (PROJECT FOLDER)--
+this is a folder that contains a main function and a library in c i made called anthlib.c 
+these together solve the descrete logrythm problem with 
+
+	i)   a brute force approach
+	ii)  the famous babystep giantstep algortythm
+	iii) the famous babystep giantstep algortythm utilizing openmp parallel code
+
 it also uses the flint library found at https://www.flintlib.org/ 
-it uses the same algorythms as in my other program Discrete_Log_Solver.py however its much faster
+note that these are the same algorythms as in my other program Discrete_Log_Solver.py however its much faster in c
 
 |-------------------------------sample output-------------------------------|
 |                                                                           |
 |   Brute Force Algorithm time: 0.008575   Seconds                          |
 |   And Got the Solution 175 ^ 72626 = 63368 (mod 77711)                    |
 |                                                                           |
-|   Baby-Step Giant-Step Algorithm time:  0.000150 Seconds                  |
+|   Baby-Step Giant-Step Algorithm time:  0.000312 Seconds                  |
 |   And Got the Solution 175 ^ 72626 = 63368 (mod 77711)                    |
 |                                                                           |
+|   Parallel Baby Step Giant Step Algorithm time: 0.000117 Seconds          |
+|   And Got the Solution 175 ^ 72626 = 63368 (mod77711)  	            |
+| 									    |
 |-------------------------------sample output-------------------------------|
