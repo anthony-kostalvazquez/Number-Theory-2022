@@ -26,8 +26,8 @@ these together solve the descrete logrythm problem with
 	ii)  the famous babystep giantstep algortythm
 	iii) the famous babystep giantstep algortythm utilizing openmp parallel code
 
-it also uses the flint library found at https://www.flintlib.org/ 
-note that these are the same algorythms as in my other program Discrete_Log_Solver.py however its much faster in c
+Dependecies: OpenMP (https://www.openmp.org), Flint (https://www.flintlib.org), GMP (https://gmplib.org), MPFR (https://www.mpfr.org)
+NOTE: that these are the same algorythms as in my other program Discrete_Log_Solver.py however its much faster in c
 
 |-------------------------------sample output-------------------------------|
 |                                                                           |
