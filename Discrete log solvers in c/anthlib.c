@@ -9,6 +9,8 @@
 #include <flint/fmpz_mod.h>
 #include "omp.h"
 
+
+
 //takes an integer n and return 1 if its a prime and 0 if it isnt
 int brute_force_primality_test(int p)
 {
@@ -67,8 +69,9 @@ int gmp_inverse(int a, int mod_b)
     return atoi(a_inverse_str) % mod_b;
 }
 
-//takes a,b,n as ulong and calculates x such that a^x = b mod n using a brute force technique 
-//and many flint library functions and data types
+//INPUT ulong a,b,n 
+//OUTPUT: ulong x such that a^x = b (mod n)
+//using a brute force approach 
 unsigned long int brute_force_discrete_log(unsigned long int a, unsigned long int b, unsigned long int n)
 {   
     unsigned long int x;
@@ -104,8 +107,9 @@ unsigned long int brute_force_discrete_log(unsigned long int a, unsigned long in
     return x;
 }
 
-//Takes integers n,a,b and solves for x in the equation a^x = b (mod n)
-//Using the famous baby-step giant-step algorithm then prints its answer and time
+//INPUT ulong a,b,n 
+//OUTPUT: ulong x such that a^x = b (mod n)
+//using the famous baby step giant step algorythm
 unsigned long int baby_step_giant_step_discrete_log (unsigned long int a, unsigned long int b, unsigned long int n)
 {   
     //initialize
@@ -204,6 +208,9 @@ unsigned long int baby_step_giant_step_discrete_log (unsigned long int a, unsign
     fmpz_mod_ctx_clear(mod_n);
 }
 
+//INPUT ulong a,b,n 
+//OUTPUT: ulong x such that a^x = b (mod n)
+//using the famous baby step giant step algorythm and parrallel code design
 unsigned long int baby_step_giant_step_parallel (unsigned long int a, unsigned long int b, unsigned long int n)
 {
     //initialize
@@ -238,23 +245,45 @@ unsigned long int baby_step_giant_step_parallel (unsigned long int a, unsigned l
     fmpz_sub_ui(m_fmpz_minus_one, m_fmpz, 1);
     unsigned long int giant_step_array[fmpz_get_ui(m_fmpz_minus_one)];
 
-    //this loop iterates from i = 0 to m-1
-    for(fmpz_init(i_fmpz) ; 0 > fmpz_cmp(i_fmpz, m_fmpz_minus_one) ;fmpz_add_ui(i_fmpz, i_fmpz, 1))
-    {   
-        //calcs i*m and stores it in temp
-        fmpz_mul(giant_step, i_fmpz, m_fmpz);
+    //initializing
+    unsigned long int nthreads;
 
-        //calcs a^im mod n and stores it in temp
-        fmpz_mod_pow_fmpz(giant_step, a_fmpz, giant_step, mod_n);
+    omp_set_num_threads(2);
+    #pragma omp parallel
+    {
+        unsigned long int i, id, nthrds;
+        id = omp_get_thread_num();
+        nthrds = omp_get_num_threads();
 
-        //calculates the inverse of a^im modulo n and puts it in temp
-        fmpz_mod_inv(giant_step, giant_step, mod_n);
+        //this will ensure that we have the same number of threads... we ask the system for x amount of threads,  however we dont always get it
+        if (id == 0)
+        {
+            nthreads = nthrds;
+        }
 
-        //calculates b * a^(-im) modulo n and stores it in temp
-        fmpz_mod_mul(giant_step, b_fmpz, giant_step, mod_n);
+        fmpz_init(i_fmpz);
 
-        //sets b * a^(-im) to the ith position of giant_step_array
-        giant_step_array[fmpz_get_ui(i_fmpz)] = fmpz_get_ui(giant_step);
+        //this loop iterates from i = 0 to m-1
+        for(fmpz_init_set_ui(i_fmpz, id), giant_step_array[id] = 0; 0 > fmpz_cmp(i_fmpz, m_fmpz_minus_one) ; fmpz_add_ui(i_fmpz, i_fmpz, id))
+        {   
+            //calcs i*m and stores it in temp
+            fmpz_mul(giant_step, i_fmpz, m_fmpz);
+
+            //calcs a^im mod n and stores it in temp
+            fmpz_mod_pow_fmpz(giant_step, a_fmpz, giant_step, mod_n);
+
+            //calculates the inverse of a^im modulo n and puts it in temp
+            fmpz_mod_inv(giant_step, giant_step, mod_n);
+
+            //calculates b * a^(-im) modulo n and stores it in temp
+            fmpz_mod_mul(giant_step, b_fmpz, giant_step, mod_n);
+            
+            #pragma omp critical
+            {
+                //sets b * a^(-im) to the ith position of giant_step_array
+                giant_step_array[fmpz_get_ui(i_fmpz)] = fmpz_get_ui(giant_step);
+            }
+        }
     }
 
     //gets the length of the array
