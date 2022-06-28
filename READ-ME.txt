@@ -1,12 +1,13 @@
 # Number-Theory-2022
 Here is a repository of all my number theory codes I built during my research term summer 2022
 
+
 --poly_mult.py--
 Python code that multiplys polynomials using kroneker substitutuion and a brute force method and times the results
 
+
 --Discrete_Log_Solver.py--
 python code that solves the descrete logrythm problem using a brute force approach and the famous babystep giantstep algortythm
-
 |-------------------------------sample output-------------------------------|
 |                                                                           |
 |   Brute Force Algorithm time:  320.0532867908478 Seconds                  |
@@ -18,7 +19,7 @@ python code that solves the descrete logrythm problem using a brute force approa
 |-------------------------------sample output-------------------------------|
 
 
---Discrete_Log_Solver.c (PROJECT FOLDER)--
+--Discrete Log Solvers in c (FOLDER)--
 this is a folder that contains a main function and a library in c i made called anthlib.c 
 these together solve the descrete logrythm problem with 
 
@@ -28,7 +29,6 @@ these together solve the descrete logrythm problem with
 
 Dependecies: OpenMP (https://www.openmp.org), Flint (https://www.flintlib.org), GMP (https://gmplib.org), MPFR (https://www.mpfr.org)
 NOTE: that these are the same algorythms as in my other program Discrete_Log_Solver.py however its much faster in c
-
 |-------------------------------sample output-------------------------------|
 |                                                                           |
 |   Brute Force Algorithm time: 0.008575   Seconds                          |
@@ -41,3 +41,9 @@ NOTE: that these are the same algorythms as in my other program Discrete_Log_Sol
 |   And Got the Solution 175 ^ 72626 = 63368 (mod77711)  	            |
 | 									    |
 |-------------------------------sample output-------------------------------|
+
+
+--inputs.c--
+This program was created to calculate inputs for Dr.Anton Mosunovs' (https://github.com/amosunov) programs polymult 1.4/1.4 however it is much to slow. The bottleneck is the brute force method i use to find factors wich can be optimized however manual calculations are sufficent and faster. This program works with values up to 2^40 it just takes a long time.
+
+
